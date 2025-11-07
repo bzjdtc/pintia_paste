@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Pintia 字符粘贴器
+// @name         Pintia 字符粘贴器 源
 // @namespace    http://tampermonkey.net/
 // @version      3.2
 // @description  在 Pintia.cn 自动逐字符粘贴文本（模拟人类打字，支持全屏丝滑拖拽）
@@ -19,11 +19,11 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 380px;
-            height: 500px;
+            width: 260px;
+            height: 380px;
             background-color: #ffffff;
             border: 2px solid #4a90e2;
-            padding: 20px;
+            padding: 16px;
             border-radius: 12px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.15);
             z-index: 10000;
@@ -44,14 +44,14 @@
         }
 
         .pintia-paster-title {
-            margin: 0 0 15px 0;
+            margin: 0 0 6px 0;
             padding: 0;
             color: #2c3e50;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 560;
             text-align: center;
             border-bottom: 1px solid #eaeaea;
-            padding-bottom: 10px;
+            padding-bottom: 2px;
             cursor: move;
             flex-shrink: 0;
         }
@@ -59,9 +59,9 @@
         .pintia-paster-input {
             width: 100%;
             flex: 1;
-            min-height: 250px;
-            padding: 12px;
-            font-size: 14px;
+            min-height: 210px;
+            padding: 10px;
+            font-size: 12px;
             line-height: 1.5;
             resize: vertical;
             overflow: auto;
@@ -83,22 +83,22 @@
         .pintia-paster-button-container {
             display: flex;
             justify-content: center;
-            margin-top: 15px;
+            margin-top: 12px;
             flex-shrink: 0;
             gap: 10px;
         }
 
         .pintia-paster-button {
-            width: 120px;
-            height: 40px;
-            padding: 8px 16px;
+            width: 90px;
+            height: 30px;
+            padding: 6px 14px;
             background-color: #4a90e2;
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 540;
+            font-size: 12px;
             transition: all 0.2s ease;
             box-shadow: 0 2px 5px rgba(74, 144, 226, 0.3);
         }
@@ -135,7 +135,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 10px;
+            margin-top: 8px;
             flex-shrink: 0;
             gap: 8px;
         }
@@ -144,7 +144,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100%;
+            width: 80%;
         }
 
         .pintia-mode-label, .pintia-speed-label {
@@ -156,12 +156,12 @@
         }
 
         .pintia-mode-select, .pintia-speed-select {
-            padding: 6px 10px;
+            padding: 4px 8px;
             border: 1px solid #d1d9e6;
             border-radius: 6px;
             font-size: 12px;
             background-color: white;
-            min-width: 150px;
+            min-width: 130px;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
@@ -176,38 +176,38 @@
             align-items: center;
             justify-content: center;
             margin-top: 10px;
-            gap: 15px;
+            gap: 12px;
             flex-shrink: 0;
             display: none;
         }
 
         .pintia-status-text {
-            font-size: 14px;
+            font-size: 12px;
             color: #4a90e2;
-            font-weight: 600;
-            min-width: 120px;
+            font-weight: 560;
+            min-width: 70px;
             text-align: center;
         }
 
         .pintia-cancel-button {
-            width: 80px;
-            height: 32px;
-            padding: 6px 12px;
+            width: 50px;
+            height: 20px;
+            padding: 0px 4px;
             background-color: #4a90e2;
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 12px;
+            font-weight: 500;
+            font-size: 10px;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 5px rgba(74, 144, 226, 0.3);
+            box-shadow: 0 2px 4px rgba(74, 144, 226, 0.3);
         }
 
         .pintia-cancel-button:hover:not(:disabled) {
             background-color: #3a7bc8;
             transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(74, 144, 226, 0.4);
+            box-shadow: 0 2px 6px rgba(74, 144, 226, 0.4);
         }
 
         .pintia-cancel-button:active:not(:disabled) {
@@ -292,15 +292,21 @@
     const mediumOption = document.createElement('option');
     mediumOption.value = 'medium';
     mediumOption.textContent = '中速';
-    mediumOption.selected = true;
+    // mediumOption.selected = true;
 
     const fastOption = document.createElement('option');
     fastOption.value = 'fast';
     fastOption.textContent = '快速';
 
+    const ultraOption = document.createElement('option');
+    ultraOption.value = 'ultra';
+    ultraOption.textContent = '极速';
+    ultraOption.selected = true;
+
     speedSelect.appendChild(slowOption);
     speedSelect.appendChild(mediumOption);
     speedSelect.appendChild(fastOption);
+    speedSelect.appendChild(ultraOption);
 
     speedRow.appendChild(speedLabel);
     speedRow.appendChild(speedSelect);
@@ -443,6 +449,10 @@
         let minDelay, maxDelay;
 
         switch(speed) {
+            case 'ultra':
+                minDelay = 1;
+                maxDelay = 5;
+                break;
             case 'slow':
                 minDelay = 70;
                 maxDelay = 150;
@@ -461,20 +471,22 @@
         return minDelay + Math.random() * (maxDelay - minDelay);
     }
 
-    // 根据速度设置获取思考停顿时间
-    function getThinkingDelay() {
-        const speed = speedSelect.value;
+    //根据速度设置获取思考停顿时间
+    // function getThinkingDelay() {
+    //     const speed = speedSelect.value;
 
-        switch(speed) {
-            case 'slow':
-                return 200 + Math.random() * 200;
-            case 'fast':
-                return 30 + Math.random() * 60;
-            case 'medium':
-            default:
-                return 50 + Math.random() * 100;
-        }
-    }
+    //     switch(speed) {
+    //         case 'ultra':
+    //             return 0;
+    //         case 'slow':
+    //             return 200 + Math.random() * 200;
+    //         case 'fast':
+    //             return 30 + Math.random() * 60;
+    //         case 'medium':
+    //         default:
+    //             return 50 + Math.random() * 100;
+    //     }
+    // }
 
     // 触发所有必要的事件以确保编辑器处理内容
     function triggerEditorEvents(element) {
@@ -609,33 +621,39 @@
         const totalChars = text.length;
         let typedChars = 0;
 
+        // 根据打字速度设置每次粘贴的字符块大小
+        const speed = speedSelect.value;
+        const CHUNK_SIZE = (speed === 'ultra') ? 5 : 1;
+
         // 使用for循环而不是forEach，以便在取消时中断
-        for (let i = 0; i < totalChars; i++) {
+        // 1. 循环步长改为 CHUNK_SIZE (5)
+        for (let i = 0; i < totalChars; i += CHUNK_SIZE) {
             if (cancelTyping) {
                 break;
             }
 
-            const char = text[i];
+            // 2. 获取要粘贴的字符块
+            const charOrChunk = text.substring(i, Math.min(i + CHUNK_SIZE, totalChars));
 
-            // 更新进度
-            typedChars++;
+            // 更新进度 (增加实际插入的字符数)
+            typedChars += charOrChunk.length; // <-- 使用块的实际长度
             const progress = (typedChars / totalChars) * 100;
             statusText.textContent = `输入中... ${Math.round(progress)}%`;
 
-            // 使用可靠的方法插入字符并触发事件
-            insertCharAndTriggerEvents(targetElement, char);
+            // 使用可靠的方法插入字符块并触发事件
+            insertCharAndTriggerEvents(targetElement, charOrChunk); // <-- 传入字符块
 
             // 随机延迟，模拟人类打字速度
             await new Promise(resolve => {
                 setTimeout(resolve, getRandomDelay());
             });
 
-            // 每输入20个字符，增加一个稍长的停顿，模拟人类思考
-            if (i % 20 === 19 && i < totalChars - 1) {
-                await new Promise(resolve => {
-                    setTimeout(resolve, getThinkingDelay());
-                });
-            }
+            // 每输入20个"批次"（即 20*5=100 个字符），增加一个稍长的停顿，模拟人类思考
+            // if ((i / CHUNK_SIZE) % 20 === 19 && i < totalChars - CHUNK_SIZE) { // <-- 逻辑调整以适应新步长
+            //     await new Promise(resolve => {
+            //         setTimeout(resolve, getThinkingDelay());
+            //     });
+            // }
         }
 
         // 完成或取消后的清理工作
