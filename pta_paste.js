@@ -450,9 +450,10 @@
 
         switch(speed) {
             case 'ultra':
-                minDelay = 1;
-                maxDelay = 5;
-                break;
+                // minDelay = 1;
+                // maxDelay = 5;
+                // break;
+                return 1;
             case 'slow':
                 minDelay = 70;
                 maxDelay = 150;
