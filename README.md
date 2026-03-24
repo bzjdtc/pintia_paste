@@ -6,7 +6,7 @@
 
 ## 📦 安装指南
 
- 1. 确保你的浏览器已安装 **Tampermonkey (油猴)** 扩展。
+ 1. 确保你的浏览器已安装 **Tampermonkey (油猴)** 扩展(需要开启允许运行用户脚本)
  2. 点击[此处添加脚本](https://greasyfork.org/zh-CN/scripts/570245-pintia-%E5%AD%97%E7%AC%A6%E7%B2%98%E8%B4%B4%E5%99%A8)。
  3. 保存并启用脚本。
 

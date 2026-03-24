@@ -17,7 +17,7 @@
 
     // --- 速度配置区 ---
     const CHUNK_SIZE = 5;
-    const DELAY_MS = 1;
+    const DELAY_MS = 10;
 
     function insertCharAndTriggerEvents(targetElement, char) {
         targetElement.focus();
