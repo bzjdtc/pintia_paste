@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Pintia 字符粘贴器 (无 UI)
+// @name         PTA pintia 字符粘贴器 (无 UI)
 // @namespace    http://tampermonkey.net/
-// @version      4.2
-// @description  在 Pintia.cn 按 Ctrl+V 自动触发模拟打字粘贴，支持 ESC 键紧急停止
+// @version      4.3
+// @description  在 pintia.cn 按 Ctrl+V 自动触发模拟打字粘贴，支持 ESC 键紧急停止
 // @author       Bzjdtc
 // @match        https://pintia.cn/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
